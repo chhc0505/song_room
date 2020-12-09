@@ -13,12 +13,15 @@ void print_room(struct room *);
 void add_time(struct room *, int);
 void subtract_time(struct room *, int);
 void room_init(struct  room *, int);
+void add_pnum(struct room *, int);
+
 
 int main()
 {	
 	int signal = 1;
 	int choose1, choose2, choose3;
 	int room_num;
+	int all_price;
 
 	if(who_are_you() == 1)
 		printf("접속 완료!!\n\n\n");
@@ -30,7 +33,7 @@ int main()
 	while(signal){
 		printf("1.모든 방 정보 출력\n");
 		printf("2.방 정보 변경\n");
-		printf("3.메뉴판 출력\n");
+		printf("3.음식 주문\n");
 		printf("4.총 판매량 출력\n");
 		printf("5.프로그램 종료!\n");
 		printf("1/2/3/4/5 입력\n");
@@ -59,8 +62,10 @@ int main()
 						subtract_time(rlist,room_num);
 						break;
 					case 3:
+						room_init(rlist,room_num);
 						break;
 					case 4:
+						add_pnum(rlist,room_num);
 						break;
 
 				}
@@ -168,4 +173,26 @@ void add_pnum(struct room *rlist, int room_num){
 
 }
 
+void menu(struct room *rlist, int room_num,int *all_price ){
+	int signal = 1;
+	int choose;
+	while(signal){
+		printf("1.과일 뷔페 29000원\n");
+		printf("2.스페셜 마른뷔페 28000원\n");
+		printf("3.찹쌀 탕수육 25000원 \n");
+		printf("4.수세소세지 28000원 \n");
+		printf("5.오돌뼈 + 주먹밥 28000 \n\n");
+		printf("6.캔콜라 1000원\n");
+		printf("7.캔사이다 1000원\n");
+		printf("8.소주 0원\n9.맥주 0원\n");
+		printf("1/2/3/4/5/6/7/8 입력:");
+		scanf("%d", &choose);
+			
 
+
+	
+	}
+
+
+
+}
