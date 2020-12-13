@@ -14,32 +14,35 @@ void add_time(struct room *, int);
 void subtract_time(struct room *, int);
 void room_init(struct  room *, int);
 void add_pnum(struct room *, int);
-
+void menu(struct room *, int , int *);
+void change_password(struct room *, int);
 
 int main()
 {	
 	int signal = 1;
 	int choose1, choose2, choose3;
 	int room_num;
-	int all_price;
+	int all_price = 0;
 
 	if(who_are_you() == 1)
 		printf("접속 완료!!\n\n\n");
 	else return 0;
 
 	struct room rlist[5];
-
-
+	for(int k=1; k<6; k++){
+		room_init(rlist,k);
+	}
 	while(signal){
 		printf("1.모든 방 정보 출력\n");
 		printf("2.방 정보 변경\n");
 		printf("3.음식 주문\n");
 		printf("4.총 판매량 출력\n");
 		printf("5.프로그램 종료!\n");
-		printf("1/2/3/4/5 입력\n");
+		printf("1/2/3/4/5 입력");
 		scanf("%d" , &choose1);
+		printf("================================");
 		printf("\n\n");
-
+		
 		switch(choose1){
 			case 1:
 				print_room(rlist);
@@ -49,10 +52,12 @@ int main()
 				printf("2.시간 제거\n");
 				printf("3.방 초기화\n");
 				printf("4.인원수 추가\n");
-				printf("1/2/3/4입력\n");
+				printf("5.방 비밀번호 변경\n");
+				printf("1/2/3/4/5 입력");
 				scanf("%d", &choose2);
 				printf("방 번호:");
 				scanf("%d", &room_num);
+				printf("=============================");
 				printf("\n\n");
 				switch(choose2){
 					case 1:
@@ -67,11 +72,19 @@ int main()
 					case 4:
 						add_pnum(rlist,room_num);
 						break;
+					case 5:
+						change_password(rlist,room_num);
+						break;
 
 				}
+				break;
 			case 3:
+				printf("방 번호:");
+				scanf("%d", &room_num);
+				menu(rlist,room_num,&all_price);
 				break;
 			case 4:
+				printf("총 판매량: %d\n\n", all_price);
 				break;
 			case 5:
 				signal = 0;
@@ -154,10 +167,10 @@ void subtract_time(struct room *rlist, int room_num){
 }
 
 void room_init(struct room *rlist, int room_num){
-	(rlist+room_num)->time = 0;
-	(rlist+room_num)->p_num = 0;
-	(rlist+room_num)->food_price = 0;
-	strcpy((rlist+room_num)->room_password,"0000");
+	(rlist+room_num-1)->time = 0;
+	(rlist+room_num-1)->p_num = 0;
+	(rlist+room_num-1)->food_price = 0;
+	strcpy((rlist+room_num-1)->room_password,"0000");
 	printf("%d번방 초기화 완료!\n\n", room_num);
 }
 
@@ -173,9 +186,22 @@ void add_pnum(struct room *rlist, int room_num){
 
 }
 
+void change_password(struct room *rlist, int room_num){
+	char new_password[4];	
+
+	printf("비밀번호4자리 입력:");
+	scanf("%s", new_password);
+	strcpy((rlist+room_num-1)->room_password,new_password); 
+	printf("비밀번호 변경 완료!\n\n");
+
+
+}
+
 void menu(struct room *rlist, int room_num,int *all_price ){
 	int signal = 1;
 	int choose;
+	
+	int price[] = {29000, 28000, 25000, 28000, 28000, 1000, 1000, 0, 0};
 	while(signal){
 		printf("1.과일 뷔페 29000원\n");
 		printf("2.스페셜 마른뷔페 28000원\n");
@@ -185,10 +211,15 @@ void menu(struct room *rlist, int room_num,int *all_price ){
 		printf("6.캔콜라 1000원\n");
 		printf("7.캔사이다 1000원\n");
 		printf("8.소주 0원\n9.맥주 0원\n");
-		printf("1/2/3/4/5/6/7/8 입력:");
+		printf("10.메뉴판 종료\n\n");
+		printf("1/2/3/4/5/6/7/8/9/10 입력:");
 		scanf("%d", &choose);
-			
-
+		if(choose == 10)
+			signal = 0;
+		else{
+			(rlist+room_num -1) ->food_price += *(price+choose-1);
+			*all_price += *(price+choose-1);
+		}
 
 	
 	}
